@@ -1,4 +1,4 @@
-elevation_mapping_node:
+elevation_mapping:
   ros__parameters:
     #### Basic parameters ########
     voxel_filter_size: 0.1
@@ -6,8 +6,8 @@ elevation_mapping_node:
     drift_compensation_variance_inlier: 0.1
     checker_layer: 'elevation'                # layer name for checking the validity of the cell.
     initialized_variance: 10.0                     # initial variance for each cell.    
-    resolution: 0.1                                # resolution in m.  
-    map_length: 20.0                                 # map's size in m.
+    resolution: 0.1                                 # resolution in m.  
+    map_length: 10.0                                 # map's size in m.
     sensor_noise_factor: 0.05                       # point's noise is sensor_noise_factor*z^2 (z is distance from sensor).
     mahalanobis_thresh: 2.0                         # points outside this distance is outlier.
     outlier_variance: 0.01                          # if point is outlier, add this value to the cell.
@@ -49,14 +49,14 @@ elevation_mapping_node:
     overlap_clear_range_xy: 4.0                     # xy range [m] for clearing overlapped area. this defines the valid area for overlap clearance. (used for multi floor setting)
     overlap_clear_range_z: 2.0                      # z range [m] for clearing overlapped area. cells outside this range will be cleared. (used for multi floor setting)
     # pose_topic: '/dlio/odom_node/odom'
-    map_frame: 'odom'                               # The map frame where the odometry source uses.
-    base_frame: 'base_link'                    # The robot's base frame. This frame will be a center of the map.
+    map_frame: 'spot1/base/spot/body'                               # The map frame where the odometry source uses.
+    base_frame: 'spot1/base/spot/body'                    # The robot's base frame. This frame will be a center of the map.
     corrected_map_frame: 'odom'
 
 
     #### Feature toggles ########
     enable_edge_sharpen: true
-    enable_visibility_cleanup: true
+    enable_visibility_cleanup: true 
     enable_drift_compensation: true
     enable_overlap_clearance: true
     enable_pointcloud_publishing: false
@@ -65,18 +65,27 @@ elevation_mapping_node:
 
     #### Traversability filter ########
     use_chainer: false                              # Use chainer as a backend of traversability filter or pytorch. If false, it uses pytorch. pytorch requires ~2GB more GPU memory compared to chainer but runs faster.
-    weight_file: '$(find-pkg-share elevation_mapping_cupy)/config/core/weights.dat'               # Weight file for traversability filter
+    # weight_file: '$(find-pkg-share elevation_mapping_cupy)/config/core/weights.dat'               # Weight file for traversability filter
+    # weight_file: 'config/core/weights.dat'               # Weight file for traversability filter
+    weight_file: '/home/ros/workspace/src/elevation_mapping_cupy/elevation_mapping_cupy/config/core/weights.dat'               # Weight file for traversability filter
+    # weight_file: ''               # Weight file for traversability filter
+
 
     #### Upper bound ########
     use_only_above_for_upper_bound: false
 
     #### Initializer ########
     initialize_method: 'linear'                                         # Choose one from 'nearest', 'linear', 'cubic'
-    initialize_frame_id: ['base_link']   # One tf (like ['footprint'] ) initializes a square around it.
+    initialize_frame_id: ['spot1/base/spot/body']   # One tf (like ['footprint'] ) initializes a square around it.
+    # initialize_frame_id: ['base_link']   # One tf (like ['footprint'] ) initializes a square around it.
     initialize_tf_offset: [0.0, 0.0, 0.0, 0.0]                          # z direction. Should be same number as initialize_frame_id.
     dilation_size_initialize: 2                                         # dilation size after the init.
     initialize_tf_grid_size: 1.0                                        # This is not used if number of tf is more than 3.
     use_initializer_at_start: true                                      # Use initializer when the node starts.
 
     #### Default Plugins ########
-    plugin_config_file: '$(find-pkg-share elevation_mapping_cupy)/config/core/plugin_config.yaml'
+    # plugin_config_file: '$(find-pkg-share elevation_mapping_cupy)/config/core/plugin_config.yaml'
+    # plugin_config_file: 'config/core/plugin_config.yaml'
+    plugin_config_file: '/home/ros/workspace/src/elevation_mapping_cupy/elevation_mapping_cupy/config/core/plugin_config.yaml'
+    # plugin_config_file: ''
+

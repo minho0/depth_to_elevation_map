@@ -68,7 +68,8 @@ class ElevationMap:
 
         self.map_lock = threading.Lock()
         self.semantic_map = SemanticMap(self.param)
-        self.elevation_map = xp.zeros((7, self.cell_n, self.cell_n), dtype=self.data_type)
+        # self.elevation_map = xp.zeros((7, self.cell_n, self.cell_n), dtype=self.data_type) # Original
+        self.elevation_map = xp.zeros((10, self.cell_n, self.cell_n), dtype=self.data_type) # Added for normal map vizualization (mhlee)
         self.layer_names = [
             "elevation",
             "variance",
@@ -77,7 +78,10 @@ class ElevationMap:
             "time",
             "upper_bound",
             "is_upper_bound",
-        ]
+            "normal_x",
+            "normal_y",
+            "normal_z"
+        ] # Added normal_x, normal_y, normal_z for normal map vizualization (mhlee)
 
         # buffers
         self.traversability_buffer = xp.full((self.cell_n, self.cell_n), xp.nan)
@@ -466,6 +470,7 @@ class ElevationMap:
         Returns:
             None:
         """
+        self.clear() # Added for single point cloud . If you want to accumulate, remove it. (mhlee)
         raw_points = cp.asarray(raw_points, dtype=self.data_type)
         
         # Check for the sanity of the raw points
@@ -594,6 +599,10 @@ class ElevationMap:
                 self.normal_map,
                 size=(self.cell_n * self.cell_n),
             )
+
+            self.elevation_map[7] = self.normal_map[0]  # Added for normal map vizualization (mhlee)
+            self.elevation_map[8] = self.normal_map[1]  # Added for normal map vizualization (mhlee)
+            self.elevation_map[9] = self.normal_map[2]  # Added for normal map vizualization (mhlee)
 
     def process_map_for_publish(self, input_map, fill_nan=False, add_z=False, xp=cp):
         """Process the input_map according to the fill_nan and add_z flags.
