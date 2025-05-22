@@ -8,6 +8,8 @@ Panels:
         - /Status1
         - /PointCloud21
         - /GridMap1
+        - /Axes1
+        - /Axes2
       Splitter Ratio: 0.5
     Tree Height: 1085
   - Class: rviz_common/Selection
@@ -116,10 +118,17 @@ Visualization Manager:
       Radius: 0.10000000149011612
       Reference Frame: <Fixed Frame>
       Value: true
+    - Class: rviz_default_plugins/Axes
+      Enabled: true
+      Length: 1
+      Name: Axes
+      Radius: 0.10000000149011612
+      Reference Frame: spot1/base/spot/body
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: spot1/base/spot/body
+    Fixed Frame: spot1/base/spot/odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -162,25 +171,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 9.50268840789795
+      Distance: 30.27977752685547
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.36461496353149414
-        Y: -0.7619505524635315
-        Z: 0.7061034440994263
+        X: 3.8440029621124268
+        Y: 5.3045525550842285
+        Z: 0.3438519239425659
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.2753980755805969
+      Pitch: 0.4903980791568756
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.12721848487854
+      Yaw: 3.1672186851501465
     Saved: ~
 Window Geometry:
   Displays:

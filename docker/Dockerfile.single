@@ -20,7 +20,7 @@ ARG ROS_DISTRO=humble
 ARG USERNAME=ros
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
-ARG RMW_NAME=zenoh
+ARG RMW_NAME=fastrtps
 ARG INSTALL_EMCUPY_ROSDEPS=true
 ###############################################################################
 
@@ -42,7 +42,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     RMW_IMPLEMENTATION_DASH=rmw-${RMW_NAME}-cpp \
     # devcontainer‑specific defaults
     LIBGL_ALWAYS_SOFTWARE=1 \
-    ROS_DOMAIN_ID=12 \
+    ROS_DOMAIN_ID=0 \
     TURTLEBOT3_MODEL=waffle_realsense_depth
 ###############################################################################
 

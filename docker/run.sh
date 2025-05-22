@@ -1,5 +1,5 @@
 #!/bin/bash
-IMAGE_NAME="mhlee/elevatin_mapping_cupy:latest"
+IMAGE_NAME="mhlee/elevatin_mapping_cupy_2:latest"
 
 # Define environment variables for enabling graphical output for the container.
 XSOCK=/tmp/.X11-unix

@@ -470,7 +470,7 @@ class ElevationMap:
         Returns:
             None:
         """
-        self.clear() # Added for single point cloud . If you want to accumulate, remove it. (mhlee)
+        # self.clear() # Added for single point cloud . If you want to accumulate, remove it. (mhlee)
         raw_points = cp.asarray(raw_points, dtype=self.data_type)
         
         # Check for the sanity of the raw points
