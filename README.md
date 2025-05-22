@@ -1,83 +1,98 @@
-# ROS2 Elevation Mapping Cupy 
- **Status**: Under Development 🚧
+# ROS 2 Elevation Mapping CUPY
 
+**Status**: 🚧 Under Development  
 <!-- ![Elevation Map in ROS 2 Humble with Gazebo ](https://github.com/user-attachments/assets/0dd9ebbe-a90d-486f-9871-81921308fab9) -->
 
+---
+
 ## Installation
-you will need to install:
+
+You will need to install the following:
+
 - VS Code
 - Docker
 - NVIDIA Container Toolkit
 - NVIDIA CUDA Toolkit
+---
 
----------------------------------------------------------
+## Clone the Repository
 
-
-## Run the Container
-
-#### Clone the Elevation Mapping CUPY Repository
 ```bash
 git clone https://github.com/minho0/elevation_map_singlepcd.git
 ```
 
-#### Building the Docker Container
+---
 
-  ```bash
-  cd elevation_map_singlepcd/docker
+## Build the Docker Container
 
-  docker build -t mhlee/elevation_mapping_cupy:latest .
-
-  ./run.sh
-  ```
-
-#### Setup the workspace 
-  ```bash
-  cd docker
-
-  ./setup.sh
-  ```
-
-#### Build the workspace
-  ```bash
-  cd ~/workspace
-
-  colcon build --symlink-install
-
-  source install/setup.bash
-
-  source /opt/ros/humble/setup.bash
-  ```
-
-#### Running demo
-
-In a current terminal launch the elevation_mapping_cupy :
 ```bash
-ros2 launch depth_to_pointcloud_pub depth_to_pointcloud.launch.py
-``` 
+cd elevation_map_singlepcd/docker
+docker build -t mhlee/elevation_mapping_cupy:latest .
+./run.sh
+```
 
-In a second terminal launch the depth_to_pointcloud node:
+---
+
+## Setup the Workspace
+
 ```bash
-docker exec -it elevation_mapping_cupy bash
+cd docker
+./setup.sh
+```
 
+---
+
+## Build the Workspace
+
+```bash
 cd ~/workspace
-
+colcon build --symlink-install
 source install/setup.bash
+source /opt/ros/humble/setup.bash
+```
 
-ros2 launch depth_to_pointcloud_pub depth_to_pointcloud.launch.py
-``` 
+---
 
-In a third terminal play the mcap data :
+## Running the Demo
+
+### ① Launch the `elevation_mapping_cupy` node
+
 ```bash
-docker cp <'host_path'> elevation_mapping_cupy:/home/ros/workspace/src/elevation_mapping_cupy/data/
+ros2 launch depth_to_pointcloud_pub depth_to_pointcloud.launch.py
+```
 
+### ② Launch the `depth_to_pointcloud` node inside the container
+
+```bash
 docker exec -it elevation_mapping_cupy bash
+cd ~/workspace
+source install/setup.bash
+ros2 launch depth_to_pointcloud_pub depth_to_pointcloud.launch.py
+```
 
+### ③ Play the `.mcap` data
+
+```bash
+docker cp <host_path> elevation_mapping_cupy:/home/ros/workspace/src/elevation_mapping_cupy/data/
+docker exec -it elevation_mapping_cupy bash
 cd data
-
 sudo apt update
-
 sudo apt install ros-humble-rosbag2-storage-mcap
-
 ros2 bag play data.mcap
+```
 
-``` 
+---
+
+## Single Pointcloud Mode
+
+To enable **single pointcloud mode**, modify the following parameter:
+
+```yaml
+clear_map_before_update: true
+```
+
+in the configuration file:
+
+```
+/home/ros/workspace/src/elevation_mapping_cupy/elevation_mapping_cupy/config/core/core_param.yaml
+```
