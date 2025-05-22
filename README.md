@@ -59,7 +59,7 @@ source /opt/ros/humble/setup.bash
 ### ① Launch the `elevation_mapping_cupy` node
 
 ```bash
-ros2 launch depth_to_pointcloud_pub depth_to_pointcloud.launch.py
+ros2 launch elevation_mapping_cupy elevation_mapping_cupy.launch.py
 ```
 
 ### ② Launch the `depth_to_pointcloud` node inside the container
