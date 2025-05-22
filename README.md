@@ -13,17 +13,18 @@ You will need to install the following:
 - Docker
 - NVIDIA Container Toolkit
 - NVIDIA CUDA Toolkit
----
 
-## Clone the Repository
+## Setup
+
+### ① Clone the Repository
 
 ```bash
 git clone https://github.com/minho0/elevation_map_singlepcd.git
 ```
 
----
 
-## Build the Docker Container
+
+### ② Build the Docker Container
 
 ```bash
 cd elevation_map_singlepcd/docker
@@ -31,18 +32,18 @@ docker build -t mhlee/elevation_mapping_cupy:latest .
 ./run.sh
 ```
 
----
 
-## Setup the Workspace
+
+### ③ Setup the Workspace
 
 ```bash
 cd docker
 ./setup.sh
 ```
 
----
 
-## Build the Workspace
+
+### ④ Build the Workspace
 
 ```bash
 cd ~/workspace
@@ -51,7 +52,7 @@ source install/setup.bash
 source /opt/ros/humble/setup.bash
 ```
 
----
+
 
 ## Running the Demo
 
@@ -81,7 +82,7 @@ sudo apt install ros-humble-rosbag2-storage-mcap
 ros2 bag play data.mcap
 ```
 
----
+
 
 ## Single Pointcloud Mode
 
