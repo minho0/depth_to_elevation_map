@@ -74,9 +74,8 @@ ros2 launch depth_to_pointcloud_pub depth_to_pointcloud.launch.py
 ### ③ Play the `.mcap` data
 
 ```bash
-docker cp <host_path> elevation_mapping_cupy:/home/ros/workspace/src/elevation_mapping_cupy/data
+docker cp <host_path> elevation_mapping_cupy:/home/ros/workspace/src/elevation_mapping_cupy/
 docker exec -it elevation_mapping_cupy bash
-cd data
 sudo apt update
 sudo apt install ros-humble-rosbag2-storage-mcap
 ros2 bag play data.mcap
