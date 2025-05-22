@@ -218,9 +218,11 @@ RUN mkdir -p ${WORKSPACE}/src/elevation_mapping_cupy && chown -R ${USER_UID}:${U
 RUN echo "if [ -f ${WORKSPACE}/install/setup.bash ]; then source ${WORKSPACE}/install/setup.bash; fi" >> /home/ros/.bashrc
 WORKDIR ${WORKSPACE}
 
-
 # Setup rosdep
-RUN rosdep init
+RUN apt update && apt install -y python3-rosdep \
+    && rosdep init \
+    && rosdep update 
+
 # COPY docker/extra_rosdeps.yaml /etc/ros/rosdep/sources.list.d/emcupy-rosdeps-fixed.yaml
 # Setup rosdep with extra rosdeps and install them for elevation_mapping_cupy
 # RUN --mount=type=cache,target=/home/${USERNAME}/.ros/rosdep/sources.cache \

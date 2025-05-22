@@ -1,5 +1,5 @@
 #!/bin/bash
-IMAGE_NAME="mktk1117/elevation_mapping_cupy:latest"
+IMAGE_NAME="mhlee/elevatin_mapping_cupy:latest"
 
 # Define environment variables for enabling graphical output for the container.
 XSOCK=/tmp/.X11-unix
@@ -36,14 +36,16 @@ RUN_COMMAND="docker run \
   --privileged \
   --net=host \
   -eHOST_USERNAME=$(whoami) \
-  -v$HOME:$HOME \
-  -v$(pwd)/.etc/shadow:/etc/shadow \
-  -v$(pwd)/.etc/passwd:/etc/passwd \
-  -v$(pwd)/.etc/group:/etc/group \
-  -v/media:/media \
+  -v$(dirname $(pwd)):/home/ros/workspace/src/elevation_mapping_cupy \
+  -w /home/ros/workspace/src/elevation_mapping_cupy \
   --gpus all \
   -it $IMAGE_NAME"
 echo -e "[run.sh]: \e[1;32mThe final run command is\n\e[0;35m$RUN_COMMAND\e[0m."
 $RUN_COMMAND
 echo -e "[run.sh]: \e[1;32mDocker terminal closed.\e[0m"
 #   --entrypoint=$ENTRYPOINT \
+
+# RUN command에서 아래 부분 뺐음
+# -v$(pwd)/.etc/shadow:/etc/shadow \
+# -v$(pwd)/.etc/passwd:/etc/passwd \
+# -v$(pwd)/.etc/group:/etc/group \

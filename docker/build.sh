@@ -1,7 +1,11 @@
 #!/bin/bash
 set -e
-cd ~/workspace
+cd /home/ros/
 # Set the default build type
+
+export ROS_DISTRO=humble
+
+
 source /opt/ros/$ROS_DISTRO/setup.bash
 BUILD_TYPE=RelWithDebInfo #Debug, Release, RelWithDebInfo, MinSizeRel
 colcon build \
