@@ -203,6 +203,9 @@ class ElevationMappingNode(Node):
         except: pass
         try: self.param.use_only_above_for_upper_bound = self.get_parameter('use_only_above_for_upper_bound').get_parameter_value().bool_value
         except: pass
+        try: self.param.clear_map_before_update = self.get_parameter('clear_map_before_update').get_parameter_value().bool_value
+        except: pass # Added for single pointcloud(mhlee)
+
 
     def register_subscribers(self) -> None:
         if any(config.get("data_type") == "image" for config in self.my_subscribers.values()):

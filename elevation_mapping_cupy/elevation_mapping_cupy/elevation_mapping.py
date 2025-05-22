@@ -123,6 +123,8 @@ class ElevationMap:
 
         self.map_initializer = MapInitializer(self.initial_variance, param.initialized_variance, xp=cp, method="points")
 
+        self.clear_map_before_update = param.clear_map_before_update # Added for single pointcloud (mhlee)
+
     def clear(self):
         """Reset all the layers of the elevation & the semantic map."""
         with self.map_lock:
@@ -470,7 +472,9 @@ class ElevationMap:
         Returns:
             None:
         """
-        # self.clear() # Added for single point cloud . If you want to accumulate, remove it. (mhlee)
+
+        if self.clear_map_before_update:
+            self.clear() # Added for single point cloud . If you want to accumulate, remove it. (mhlee)
         raw_points = cp.asarray(raw_points, dtype=self.data_type)
         
         # Check for the sanity of the raw points

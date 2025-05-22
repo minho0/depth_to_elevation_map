@@ -63,6 +63,9 @@ elevation_mapping:
     enable_drift_corrected_TF_publishing: false
     enable_normal_color: false                      # If true, the map contains 'color' layer corresponding to normal. Add 'color' layer to the publishers setting if you want to visualize.
 
+    #### Single Pointcloud ########
+    clear_map_before_update : false
+
     #### Traversability filter ########
     use_chainer: false                              # Use chainer as a backend of traversability filter or pytorch. If false, it uses pytorch. pytorch requires ~2GB more GPU memory compared to chainer but runs faster.
     # weight_file: '$(find-pkg-share elevation_mapping_cupy)/config/core/weights.dat'               # Weight file for traversability filter

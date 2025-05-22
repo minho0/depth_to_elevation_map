@@ -218,6 +218,9 @@ class Parameter(Serializable):
     cell_n: int = None  # number of cells in the map
     true_cell_n: int = None  # true number of cells in the map
 
+    # for single pointcloud param
+    clear_map_before_update : bool = True # If true, clear map before each update (for single point cloud mode) (mhlee)
+
     def load_weights(self, filename: str):
         """
         Load weights from a file into the model's parameters.
