@@ -28,7 +28,7 @@ git clone https://github.com/minho0/depth_to_elevation_map.git
 
 ```bash
 cd depth_to_elevation_map/docker
-docker build -t mhlee/elevation_mapping_cupy:latest .
+docker build -t rcv_dtc/elevation_mapping_cupy:0.1 .
 ./run.sh
 ```
 
