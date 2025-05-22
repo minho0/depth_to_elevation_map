@@ -1,5 +1,5 @@
 #!/bin/bash
-IMAGE_NAME="mhlee/elevation_mapping_cupy:latest"
+IMAGE_NAME="rcv_dtc/elevation_mapping_cupy:0.1"
 
 # Define environment variables for enabling graphical output for the container.
 XSOCK=/tmp/.X11-unix
