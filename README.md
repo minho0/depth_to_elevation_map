@@ -81,14 +81,23 @@ sudo apt install ros-humble-rosbag2-storage-mcap
 ros2 bag play data.mcap
 ```
 
+### (Option) play the 'image'
+
+To play the image synchronized with the rosbag, run:
+
+```bash
+docker exec -it elevation_mapping_cupy bash
+python3 image_play.py
+```
 
 
 ## Single Pointcloud Mode
 
-To enable **single pointcloud mode**, modify the following parameter:
+To enable single pointcloud mode, set the following parameter to true.
 
+To accumulate pointclouds over time, set it to false instead:
 ```yaml
-clear_map_before_update: true
+clear_map_before_update: true # or false
 ```
 
 in the configuration file:
