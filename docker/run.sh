@@ -1,5 +1,5 @@
 #!/bin/bash
-IMAGE_NAME="mhlee/elevatin_mapping_cupy_2:latest"
+IMAGE_NAME="mhlee/elevatin_mapping_cupy:latest"
 
 # Define environment variables for enabling graphical output for the container.
 XSOCK=/tmp/.X11-unix
@@ -26,6 +26,7 @@ cd ..
 # Launch a container from the prebuilt image.
 echo "---------------------"
 RUN_COMMAND="docker run \
+  --name elevation_mapping_cupy \
   --volume=$XSOCK:$XSOCK:rw \
   --volume=$XAUTH:$XAUTH:rw \
   --env="QT_X11_NO_MITSHM=1" \
@@ -35,7 +36,7 @@ RUN_COMMAND="docker run \
   --cap-add=sys_nice \
   --privileged \
   --net=host \
-  -eHOST_USERNAME=$(whoami) \
+  -e HOST_USERNAME=$(whoami) \
   -v$(dirname $(pwd)):/home/ros/workspace/src/elevation_mapping_cupy \
   -w /home/ros/workspace/src/elevation_mapping_cupy \
   --gpus all \
