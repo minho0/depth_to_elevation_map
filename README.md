@@ -19,7 +19,7 @@ You will need to install the following:
 ### ① Clone the Repository
 
 ```bash
-git clone https://github.com/minho0/elevation_map_singlepcd.git
+git clone https://github.com/minho0/depth_to_elevation_map.git
 ```
 
 
@@ -27,7 +27,7 @@ git clone https://github.com/minho0/elevation_map_singlepcd.git
 ### ② Build the Docker Container
 
 ```bash
-cd elevation_map_singlepcd/docker
+cd depth_to_elevation_map/docker
 docker build -t mhlee/elevation_mapping_cupy:latest .
 ./run.sh
 ```
