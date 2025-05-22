@@ -15,9 +15,10 @@ import numpy as np
 from rclpy.node import Node
 from sensor_msgs.msg import Image, CameraInfo, PointCloud2, PointField
 from cv_bridge import CvBridge
-from tf2_ros import Buffer, TransformListener, LookupException, ExtrapolationException
 from ament_index_python.packages import get_package_share_directory
 from transforms3d.quaternions import quat2mat
+from tf2_ros import Buffer, TransformListener, TransformBroadcaster, LookupException, ExtrapolationException  # TF 관련 모듈
+from geometry_msgs.msg import TransformStamped
 
 ###############################################################################
 # Utility
@@ -43,7 +44,9 @@ class DepthToPointCloudNode(Node):
         self.camera_prefixes = ["frontleft", "frontright"]
         self.depth_base = "/spot1/base/spot/depth"
         self.output_ns = "/pointcloud"   # published topic: /pointcloud/<prefix>
-        self.body_frame = "spot1/base/spot/body" ##################################################################################################################### base_link 맞는지 확인해봐야지?
+        self.body_frame = "spot1/base/spot/body" 
+        self.synced_frame = f"{self.body_frame}/synced"
+
 
         # ── State ────────────────────────────────────────────────────────────
         self.bridge = CvBridge()
@@ -55,9 +58,10 @@ class DepthToPointCloudNode(Node):
             "frontright": load_extrinsic_matrix("frontright_info.yaml", "body_to_frontright"),
         }
 
-        # TF listener
+        # TF objects
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
+        self.tf_broadcaster = TransformBroadcaster(self)
 
         # merged cloud buffer (cleared every publication cycle)
         self._merge_buffer: Dict[str, np.ndarray] = {}
@@ -117,9 +121,24 @@ class DepthToPointCloudNode(Node):
         self._merge_buffer[prefix] = pts_body  # overwrite latest pts for this camera
         if len(self._merge_buffer) == len(self.camera_prefixes):
             pts_merged = np.vstack(list(self._merge_buffer.values()))
-            pc_merged_msg = self._create_pointcloud2(msg.header.stamp, self.body_frame, pts_merged)
-            self._publish_cloud(pc_merged_msg, "merged")
-            self._merge_buffer.clear()  # reset buffer for next cycle
+            stamp = msg.header.stamp
+
+            tf_msg = TransformStamped()
+            tf_msg.header.stamp = stamp
+            tf_msg.header.frame_id = self.body_frame  # parent = body
+            tf_msg.child_frame_id = self.synced_frame  # child = body/synced
+            tf_msg.transform.translation.x = 0.0  # identity 변환
+            tf_msg.transform.translation.y = 0.0
+            tf_msg.transform.translation.z = 0.0
+            tf_msg.transform.rotation.x = 0.0
+            tf_msg.transform.rotation.y = 0.0
+            tf_msg.transform.rotation.z = 0.0
+            tf_msg.transform.rotation.w = 1.0
+            self.tf_broadcaster.sendTransform(tf_msg)
+
+            pc_merged = self._create_pointcloud2(stamp, self.synced_frame, pts_merged)
+            self._publish_cloud(pc_merged, "merged")
+            self._merge_buffer.clear()
 
 
 
@@ -135,23 +154,6 @@ class DepthToPointCloudNode(Node):
         y = (v - cy) * z / fy
         return np.vstack((x.ravel(), y.ravel(), z.ravel(), np.ones(z.size)))
 
-    def _lookup_or_yaml(self, prefix: str, camera_frame: str) -> np.ndarray:
-        try:
-            tf = self.tf_buffer.lookup_transform(self.body_frame, camera_frame, rclpy.time.Time())
-            return self._tf_to_mat(tf)
-        except (LookupException, ExtrapolationException):
-            self.get_logger().warning(f"[{prefix}] TF not found — using YAML static extrinsic.")
-            return self.extrinsics[prefix]
-
-    @staticmethod
-    def _tf_to_mat(tf_msg) -> np.ndarray:
-        t = tf_msg.transform.translation
-        q = tf_msg.transform.rotation
-        T = np.eye(4)
-        T[:3, :3] = quat2mat([q.w, q.x, q.y, q.z])  # transforms3d는 [w, x, y, z] 순서!
-        T[:3, 3] = [t.x, t.y, t.z]
-        return T
-
     @staticmethod
     def _create_pointcloud2(stamp, frame: str, points: np.ndarray) -> PointCloud2:
         fields = [
@@ -161,7 +163,7 @@ class DepthToPointCloudNode(Node):
         ]
         cloud = PointCloud2()
         cloud.header.stamp = stamp
-        cloud.header.frame_id = frame  ##################################################################################################################### 이거 어디서 가져오는겨?
+        cloud.header.frame_id = frame  
         cloud.height = 1
         cloud.width = points.shape[0]
         cloud.fields = fields
