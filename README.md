@@ -56,13 +56,13 @@ source /opt/ros/humble/setup.bash
 
 ## Running the Demo
 
-### ① Launch the `elevation_mapping_cupy` node
+### ① (Current Terminal) Launch the `elevation_mapping_cupy` node
 
 ```bash
 ros2 launch elevation_mapping_cupy elevation_mapping_cupy.launch.py
 ```
 
-### ② Launch the `depth_to_pointcloud` node inside the container
+### ② (Second Terminal) Launch the `depth_to_pointcloud` node inside the container
 
 ```bash
 docker exec -it elevation_mapping_cupy bash
@@ -71,7 +71,7 @@ source install/setup.bash
 ros2 launch depth_to_pointcloud_pub depth_to_pointcloud.launch.py
 ```
 
-### ③ Play the `.mcap` data
+### ③ (Third Terminal) Play the `.mcap` data
 
 ```bash
 docker cp <host_path> elevation_mapping_cupy:/home/ros/workspace/src/elevation_mapping_cupy/
@@ -81,7 +81,7 @@ sudo apt install ros-humble-rosbag2-storage-mcap
 ros2 bag play data.mcap
 ```
 
-### (Option) play the 'image'
+### (Option) (Fourth terminal) play the 'image'
 
 To play the image synchronized with the rosbag, run:
 
