@@ -9,7 +9,6 @@
 
 You will need to install the following:
 
-- VS Code
 - Docker
 - NVIDIA Container Toolkit
 - NVIDIA CUDA Toolkit
