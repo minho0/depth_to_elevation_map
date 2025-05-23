@@ -24,7 +24,7 @@ git clone https://github.com/minho0/depth_to_elevation_map.git
 
 
 ### ② Build the Docker Container
-#### If the computer has not GPU(s), please remove the docker option '--gpus all' in the file './run.sh'.
+
 ```bash
 cd depth_to_elevation_map/docker
 docker build -t rcv_dtc/elevation_mapping_cupy:0.1 .
